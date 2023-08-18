@@ -2,20 +2,26 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormInput, registerSchema } from "@/app/validators/auth";
-import axios from "axios";
+import {
+  RegisterFormInput,
+  registerSchema,
+} from "@/app/(features)/auth/validators";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import clsx from "clsx";
 import { BsGoogle } from "react-icons/bs";
 import SocialLoginButton from "./SocialLoginButton";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   toggle: () => void;
 };
 
 export default function RegisterForm({ toggle }: Props) {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -31,13 +37,29 @@ export default function RegisterForm({ toggle }: Props) {
     setIsLoading(true);
 
     try {
-      await axios.post("/api/register", data);
-      await signIn("credentials", data);
+      // attempt to register user
+      await axios.post("http://localhost:3000/api/auth/register", data); // register user
+
+      const result = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+
+      // check if sign in was successful
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
+        router.push("/");
+      }
     } catch (e) {
-      toast.error("Something went wrong!");
-    } finally {
-      setIsLoading(false);
+      if (e instanceof AxiosError && e.response?.status === 400) {
+        toast.error(e.response.data);
+      } else {
+        toast.error("Something went wrong!");
+      }
     }
+
+    setIsLoading(false);
   };
 
   return (

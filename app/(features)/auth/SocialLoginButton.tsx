@@ -16,7 +16,8 @@ export default function SocialLoginButton({ children, provider }: Props) {
   const socialLogin = async (provider: string) => {
     setIsLoading(true);
 
-    const result = await signIn(provider);
+    //TODO: test this with an email that is not in db
+    const result = await signIn(provider, { callbackUrl: "/" });
 
     if (result?.error) {
       toast.error(result.error);

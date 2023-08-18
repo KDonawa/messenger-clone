@@ -2,19 +2,22 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormInput, loginSchema } from "@/app/validators/auth";
+import { LoginFormInput, loginSchema } from "@/app/(features)/auth/validators";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import clsx from "clsx";
 import { BsGoogle } from "react-icons/bs";
 import { signIn } from "next-auth/react";
 import SocialLoginButton from "./SocialLoginButton";
+import { useRouter } from "next/navigation";
 
 type Props = {
   toggle: () => void;
 };
 
 export default function LoginForm({ toggle }: Props) {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -29,10 +32,16 @@ export default function LoginForm({ toggle }: Props) {
   const onSubmit: SubmitHandler<LoginFormInput> = async (data) => {
     setIsLoading(true);
 
-    const result = await signIn("credentials", data);
+    const result = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
 
+    // check if sign in was successful
     if (result?.error) {
       toast.error(result.error);
+    } else {
+      router.push("/");
     }
 
     setIsLoading(false);
