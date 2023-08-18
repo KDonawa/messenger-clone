@@ -1,9 +1,23 @@
-import AuthPage from "./components/auth/AuthPage";
+import { getServerSession } from "next-auth/next";
+import AuthPage from "./(features)/auth/AuthPage";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import SignOutButton from "./(features)/auth/SignOutButton";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
   return (
-    <div className="flex justify-center h-screen p-10">
-      <AuthPage />
-    </div>
+    <main>
+      {session ? (
+        <div>
+          <h1>Active Session</h1>
+          <SignOutButton />
+        </div>
+      ) : (
+        <div className="flex h-screen justify-center p-10">
+          <AuthPage />
+        </div>
+      )}
+    </main>
   );
 }
