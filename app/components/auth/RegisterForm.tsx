@@ -2,10 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  RegisterFormInput,
-  registerSchema,
-} from "@/app/(features)/auth/validators";
+import { RegisterFormInput, registerSchema } from "@/app/utils/validators";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
@@ -49,7 +46,7 @@ export default function RegisterForm({ toggle }: Props) {
       if (result?.error) {
         toast.error(result.error);
       } else {
-        router.push("/");
+        router.push("/chats");
       }
     } catch (e) {
       if (e instanceof AxiosError && e.response?.status === 400) {

@@ -2,7 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormInput, loginSchema } from "@/app/(features)/auth/validators";
+import { LoginFormInput, loginSchema } from "@/app/utils/validators";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import clsx from "clsx";
@@ -41,7 +41,7 @@ export default function LoginForm({ toggle }: Props) {
     if (result?.error) {
       toast.error(result.error);
     } else {
-      router.push("/");
+      router.push("/chats");
     }
 
     setIsLoading(false);

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// AUTH
 export const registerSchema = z.object({
   name: z
     .string()
@@ -21,3 +22,8 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormInput = z.infer<typeof loginSchema>;
+
+// CHATS
+export const postChatSchema = z.object({
+  userId: z.string().nonempty(),
+});
