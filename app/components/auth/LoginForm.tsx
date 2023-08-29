@@ -88,10 +88,10 @@ export default function LoginForm({ toggle }: Props) {
       </div>
 
       {/* SIGN IN W/ CREDENTIALS*/}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center gap-3">
         <button
           className={clsx(
-            "self-start rounded-full bg-blue-500 px-5 py-2 font-semibold text-white disabled:opacity-50",
+            "mr-auto rounded-full bg-blue-500 px-5 py-2 font-semibold text-white disabled:opacity-50",
             !isLoading && "hover:bg-blue-600",
           )}
           type="submit"
@@ -100,11 +100,11 @@ export default function LoginForm({ toggle }: Props) {
           Sign in
         </button>
 
-        <p className="text-xs text-gray-500 ">
+        <p className="text-sm text-gray-500">
           New to Messenger?{" "}
           <button
             type="button"
-            className="underline hover:text-blue-500"
+            className="font-semibold text-blue-500"
             onClick={toggle}
           >
             Create an account
@@ -112,12 +112,10 @@ export default function LoginForm({ toggle }: Props) {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 items-center ">
-        <hr className="border opacity-50" />
-        <div className="justify-self-center text-xs text-gray-500">
-          Or continue with
-        </div>
-        <hr className="border opacity-50" />
+      <div className="flex items-center text-sm">
+        <div className="flex-1 border-t-2 border-black opacity-5"></div>
+        <span className="mx-1 flex-shrink opacity-50">or continue with</span>
+        <div className="flex-1 border-t-2 border-black opacity-5"></div>
       </div>
 
       {/* SIGN IN W/ SOCIALS*/}
