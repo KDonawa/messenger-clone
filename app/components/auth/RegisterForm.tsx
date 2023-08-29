@@ -35,7 +35,7 @@ export default function RegisterForm({ toggle }: Props) {
 
     try {
       // attempt to register user
-      await axios.post("http://localhost:3000/api/auth/register", data); // register user
+      await axios.post("/api/auth/register", data);
 
       const result = await signIn("credentials", {
         ...data,
