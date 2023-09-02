@@ -9,7 +9,7 @@ export const registerSchema = z.object({
   email: z.string().email({ message: "Must provide a valid email address" }),
   password: z
     .string()
-    .min(5, { message: "Password must be at least 5 characters" })
+    .min(4, { message: "Password must be at least 4 characters" })
     .max(30),
   // confirmPassword: z.string().min(5).max(10),
 });
