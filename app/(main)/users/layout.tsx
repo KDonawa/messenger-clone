@@ -1,10 +1,10 @@
 import ListPanel from "@/app/components/ListPanel";
 import ListSkeleton from "@/app/components/ListSkeleton";
 import UsersList from "@/app/components/users/UsersList";
-import { getUsers } from "@/app/utils/getUsers";
+import { getUsers } from "@/app/actions/getUsers";
 import { Suspense } from "react";
 
-export default async function ChatsLayout({
+export default function UsersLayout({
   children,
 }: {
   children: React.ReactNode;

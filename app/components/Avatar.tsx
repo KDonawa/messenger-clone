@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { BaseUser } from "../utils/getCurrentUser";
+import { BaseUser } from "../actions/getCurrentUser";
 
 type Props = {
   user?: BaseUser | null;

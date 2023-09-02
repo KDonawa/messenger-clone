@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { BaseUser } from "../utils/getCurrentUser";
+import { BaseUser } from "../actions/getCurrentUser";
 import { useMemo } from "react";
 
 export const useOtherUserInChat = (users: BaseUser[]) => {

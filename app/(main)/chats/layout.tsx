@@ -1,7 +1,7 @@
 import ChatsList from "@/app/components/chats/ChatsList";
 import ListPanel from "@/app/components/ListPanel";
 import ListSkeleton from "@/app/components/ListSkeleton";
-import { getChats } from "@/app/utils/getChats";
+import { getChats } from "@/app/actions/getChats";
 import { Suspense } from "react";
 
 export default async function ChatsLayout({

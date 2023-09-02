@@ -1,6 +1,6 @@
 "use client";
 
-import { BaseChat } from "../../utils/getChats";
+import { BaseChat } from "../../actions/getChats";
 import ChatCard from "./ChatCard";
 import ListPanel from "../ListPanel";
 import { useCheckForOpenChat } from "../../hooks/useCheckForOpenChat";

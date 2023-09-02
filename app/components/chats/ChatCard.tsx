@@ -2,7 +2,7 @@
 
 import Avatar from "@/app/components/Avatar";
 import clsx from "clsx";
-import { BaseChat } from "../../utils/getChats";
+import { BaseChat } from "../../actions/getChats";
 import { format } from "date-fns";
 import { useOtherUserInChat } from "../../hooks/useOtherUserInChat";
 import { useRouter } from "next/navigation";

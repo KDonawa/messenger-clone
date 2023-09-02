@@ -9,7 +9,8 @@ import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { HiChevronLeft } from "react-icons/hi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { postChat } from "@/app/utils/postChat";
+import axios from "axios";
+import { ChatsPostResult } from "@/app/api/chats/route";
 
 export default function UsersPage() {
   const router = useRouter();
@@ -18,7 +19,9 @@ export default function UsersPage() {
 
   async function handleSendButtonClick(userId: string) {
     try {
-      const data = await postChat(userId);
+      const { data } = await axios.post<ChatsPostResult>("/api/chats", {
+        userId,
+      });
       router.push(`/chats/${data.id}`);
     } catch (error) {
       toast.error("Something went wrong!");

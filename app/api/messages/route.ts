@@ -1,9 +1,9 @@
+import { createMessage } from "@/app/actions/createMessage";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { messageFormSchema } from "@/app/utils/validators";
 import { NextResponse } from "next/server";
-import { postChatSchema } from "@/app/utils/validators";
-import { createChat } from "@/app/actions/createChat";
 
-export type ChatsPostResult = Awaited<ReturnType<typeof createChat>>;
+export type PostMessagesResult = Awaited<ReturnType<typeof createMessage>>;
 
 export async function POST(request: Request) {
   try {
@@ -13,18 +13,19 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // validate request body
     const body = await request.json();
-    const result = postChatSchema.safeParse(body);
+
+    // validate request body
+    const result = messageFormSchema.safeParse(body);
     if (!result.success) {
       return new NextResponse("Invalid info", { status: 400 });
     }
 
-    const chat = await createChat(currentUser.id, result.data.userId);
+    const newMessage = await createMessage(result.data);
 
-    return NextResponse.json(chat);
+    return NextResponse.json(newMessage);
   } catch (error) {
-    // console.log("🚀 ~ POST ~ error:", error);
+    console.log("🚀 ~ POST ~ error:", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

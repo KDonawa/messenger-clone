@@ -1,13 +1,14 @@
 "use client";
 
 import { useOtherUserInChat } from "../../hooks/useOtherUserInChat";
-import { ChatWithMessages } from "../../utils/getChatById";
+import { ChatWithMessages } from "../../actions/getChatById";
 import Avatar from "../Avatar";
 import { BsThreeDots } from "react-icons/bs";
 import { HiChevronLeft } from "react-icons/hi";
 import MainPanel from "../MainPanel";
 import Link from "next/link";
 import ChatBubble from "./ChatBubble";
+import { useEffect, useRef } from "react";
 
 type Props = {
   chat: ChatWithMessages;
@@ -15,6 +16,11 @@ type Props = {
 
 export default function ChatDetails({ chat }: Props) {
   const otherUser = useOtherUserInChat(chat.users);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView();
+  }, []);
 
   return (
     <MainPanel>
@@ -48,6 +54,7 @@ export default function ChatDetails({ chat }: Props) {
           <ChatBubble isCurrentUser={false} />
           <ChatBubble />
           <ChatBubble isCurrentUser={false} />
+          <div ref={bottomRef} />
         </div>
 
         {/* INPUT SECTION */}

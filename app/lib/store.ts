@@ -1,5 +1,5 @@
 import { create, StateCreator } from "zustand";
-import { BaseUser } from "../utils/getCurrentUser";
+import { BaseUser } from "../actions/getCurrentUser";
 
 type SelectedUserSlice = {
   selectedUser: BaseUser | null;

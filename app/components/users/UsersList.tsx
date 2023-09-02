@@ -2,7 +2,7 @@
 
 import UserCard from "./UserCard";
 import { useStore } from "@/app/lib/store";
-import { BaseUser } from "../../utils/getCurrentUser";
+import { BaseUser } from "../../actions/getCurrentUser";
 import ListPanel from "../ListPanel";
 import { use } from "react";
 

@@ -1,6 +1,6 @@
 import Avatar from "@/app/components/Avatar";
 import clsx from "clsx";
-import { BaseUser } from "../../utils/getCurrentUser";
+import { BaseUser } from "../../actions/getCurrentUser";
 
 type Props = {
   user: BaseUser;

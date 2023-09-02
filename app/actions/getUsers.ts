@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/prisma";
-import { getSessionUser } from "./getSessionUser";
+import { getSessionUser } from "@/app/utils/getSessionUser";
 import { userSelect } from "./getCurrentUser";
 
 export const getUsers = async () => {

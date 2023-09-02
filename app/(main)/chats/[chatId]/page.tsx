@@ -1,5 +1,5 @@
 import ChatDetails from "@/app/components/chats/ChatDetails";
-import { getChatById } from "@/app/utils/getChatById";
+import { getChatById } from "@/app/actions/getChatById";
 import { redirect } from "next/navigation";
 
 type Props = {
