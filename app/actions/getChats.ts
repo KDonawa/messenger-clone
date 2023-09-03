@@ -1,6 +1,7 @@
 import prisma from "@/app/lib/prisma";
 import { Prisma } from ".prisma/client";
-import { getCurrentUser, userSelect } from "./getCurrentUser";
+import { userSelect } from "./getCurrentUser";
+import { getSessionUser } from "@/app/utils/getSessionUser";
 
 const chatInclude = Prisma.validator<Prisma.ChatInclude>()({
   users: { select: userSelect },
@@ -11,9 +12,9 @@ export type BaseChat = Prisma.ChatGetPayload<{
 }>;
 
 export const getChats = async () => {
-  const currentUser = await getCurrentUser();
+  const sessionUser = await getSessionUser();
 
-  if (!currentUser?.id) return [];
+  if (!sessionUser?.id) return [];
 
   try {
     const chats = await prisma.chat.findMany({
@@ -22,7 +23,7 @@ export const getChats = async () => {
       },
       where: {
         userIds: {
-          has: currentUser.id,
+          has: sessionUser.id,
         },
       },
       include: chatInclude,

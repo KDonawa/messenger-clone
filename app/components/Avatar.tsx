@@ -12,7 +12,7 @@ export default function Avatar({ user, width = 36, height = 36 }: Props) {
   // const isOnline = true;
 
   return (
-    <div className="relative">
+    <div className="relative flex-shrink-0">
       <Image
         width={width}
         height={height}

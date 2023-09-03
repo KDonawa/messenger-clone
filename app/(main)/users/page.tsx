@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ChatsPostResult } from "@/app/api/chats/route";
+import { PostChatSchema } from "@/app/utils/validators";
 
 export default function UsersPage() {
   const router = useRouter();
@@ -18,10 +19,9 @@ export default function UsersPage() {
   const setSelectedUser = useStore((state) => state.setSelectedUser);
 
   async function handleSendButtonClick(userId: string) {
+    const body: PostChatSchema = { userId };
     try {
-      const { data } = await axios.post<ChatsPostResult>("/api/chats", {
-        userId,
-      });
+      const { data } = await axios.post<ChatsPostResult>("/api/chats", body);
       router.push(`/chats/${data.id}`);
     } catch (error) {
       toast.error("Something went wrong!");

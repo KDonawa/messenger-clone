@@ -9,12 +9,15 @@ import MainPanel from "../MainPanel";
 import Link from "next/link";
 import ChatBubble from "./ChatBubble";
 import { useEffect, useRef } from "react";
+import MessageForm from "./MessageForm";
+import { useSessionUser } from "@/app/hooks/useSessionUser";
 
 type Props = {
   chat: ChatWithMessages;
 };
 
 export default function ChatDetails({ chat }: Props) {
+  const sessionUser = useSessionUser();
   const otherUser = useOtherUserInChat(chat.users);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -40,9 +43,20 @@ export default function ChatDetails({ chat }: Props) {
           </button>
         </div>
 
-        {/* MESSAGES SECTION */}
-        <div className="flex flex-1 flex-col gap-5 overflow-y-auto border-b-2 p-0.5 sm:p-4">
-          <ChatBubble />
+        {/* MESSAGES DISPLAY */}
+        <div className="flex flex-1 flex-col gap-5 overflow-y-auto border-b-2 p-2 sm:p-4">
+          {chat.messages.map((message) => {
+            return (
+              <ChatBubble
+                key={message.id}
+                isCurrentUser={message.senderId === sessionUser.id}
+                content={message.body}
+                owner={message.sender}
+                time={message.createdAt}
+              />
+            );
+          })}
+          {/* <ChatBubble />
           <ChatBubble isCurrentUser={false} />
           <ChatBubble />
           <ChatBubble isCurrentUser={false} />
@@ -53,23 +67,12 @@ export default function ChatDetails({ chat }: Props) {
           <ChatBubble />
           <ChatBubble isCurrentUser={false} />
           <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
+          <ChatBubble isCurrentUser={false} /> */}
           <div ref={bottomRef} />
         </div>
 
         {/* INPUT SECTION */}
-        <form
-          onSubmit={() => {
-            console.log("sent message");
-          }}
-          className="px-5 py-1"
-        >
-          <input
-            type="text"
-            placeholder="Write something..."
-            className="w-full rounded-full bg-gray-200 px-3 py-2 text-sm outline-none disabled:opacity-50"
-          />
-        </form>
+        <MessageForm chatId={chat.id} />
       </div>
     </MainPanel>
   );

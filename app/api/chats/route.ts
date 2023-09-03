@@ -1,15 +1,15 @@
-import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import { postChatSchema } from "@/app/utils/validators";
 import { createChat } from "@/app/actions/createChat";
+import { getSessionUser } from "@/app/utils/getSessionUser";
 
 export type ChatsPostResult = Awaited<ReturnType<typeof createChat>>;
 
 export async function POST(request: Request) {
   try {
     // check if user making request is authenticated
-    const currentUser = await getCurrentUser();
-    if (!currentUser?.id) {
+    const sessionUser = await getSessionUser();
+    if (!sessionUser?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       return new NextResponse("Invalid info", { status: 400 });
     }
 
-    const chat = await createChat(currentUser.id, result.data.userId);
+    const chat = await createChat(sessionUser.id, result.data.userId);
 
     return NextResponse.json(chat);
   } catch (error) {

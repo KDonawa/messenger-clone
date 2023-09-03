@@ -7,7 +7,6 @@ const chatInclude = Prisma.validator<Prisma.ChatInclude>()({
   messages: {
     include: {
       sender: { select: userSelect },
-      seenBy: { select: userSelect },
     },
   },
 });

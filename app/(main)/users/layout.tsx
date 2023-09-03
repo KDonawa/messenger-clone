@@ -4,6 +4,8 @@ import UsersList from "@/app/components/users/UsersList";
 import { getUsers } from "@/app/actions/getUsers";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function UsersLayout({
   children,
 }: {

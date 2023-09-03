@@ -6,39 +6,26 @@ export async function createMessage({
   image,
   senderId,
   chatId,
-}: MessageFormSchema) {
-  const newMessage = await prisma.message.create({
-    data: {
-      body: text,
-      image: image,
-      sender: {
-        connect: { id: senderId },
-      },
-      seenBy: {
-        connect: { id: senderId },
-      },
-      chat: {
-        connect: { id: chatId },
-      },
-    },
-    select: {
-      id: true,
-      body: true,
-      createdAt: true,
-    },
-  });
+}: MessageFormSchema & { senderId: string }) {
+  const timeNow = new Date();
 
-  await prisma.chat.update({
+  const update = await prisma.chat.update({
     where: { id: chatId },
     data: {
-      lastMessageAt: newMessage.createdAt,
-      lastMessageText: newMessage.body,
+      lastMessageAt: timeNow,
+      lastMessageText: text,
       messages: {
-        connect: { id: newMessage.id },
+        create: {
+          createdAt: timeNow,
+          body: text,
+          image: image,
+          sender: {
+            connect: { id: senderId },
+          },
+        },
       },
     },
-    select: {},
   });
 
-  return newMessage;
+  // return update;
 }

@@ -10,27 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  email String @unique
-  hashedPassword String?
-  image String?
-  emailVerified DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  acounts Account[]
-
-  messages Message[]
-
-  seenMessages Message[] @relation("SeenMessages", fields: [seenMessageIds], references: [id])
-  seenMessageIds String[] @db.ObjectId
-
-  chats Chat[] @relation(fields: [chatIds], references: [id])
-  chatIds String[] @db.ObjectId
-}
-
 model Account {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   type String
@@ -50,6 +29,27 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String @unique
+  hashedPassword String?
+  image String?
+  emailVerified DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  acounts Account[]
+
+  chats Chat[] @relation(fields: [chatIds], references: [id])
+  chatIds String[] @db.ObjectId
+
+  messages Message[]
+
+  // seenMessages Message[] @relation("SeenMessages", fields: [seenMessageIds], references: [id])
+  // seenMessageIds String[] @db.ObjectId
+}
+
 model Chat {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
@@ -57,9 +57,9 @@ model Chat {
   isGroup Boolean?
 
   messages Message[]
+
   lastMessageAt DateTime?
   lastMessageText String?
-  // messageIds String[] @db.ObjectId
 
   users User[] @relation(fields: [userIds], references: [id])
   userIds String[] @db.ObjectId
@@ -74,9 +74,9 @@ model Message {
   sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
   senderId String @db.ObjectId
 
-  seenBy User[] @relation("SeenMessages", fields: [seenByIds], references: [id])
-  seenByIds String[] @db.ObjectId
-
   chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String @db.ObjectId
+
+  // seenBy User[] @relation("SeenMessages", fields: [seenByIds], references: [id])
+  // seenByIds String[] @db.ObjectId
 }

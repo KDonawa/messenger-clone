@@ -6,6 +6,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -22,6 +24,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials");
         }
 
+        //TODO: test what happens when we can't successfully connect to the db
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -46,12 +49,32 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id!,
+        },
+      };
+    },
+  },
+
   session: {
     strategy: "jwt",
   },
-  debug: process.env.NODE_ENV !== "production",
+
   pages: {
     signIn: "/",
     signOut: "/",

@@ -40,11 +40,11 @@ export default function ChatCard({ chat, isSelected = false }: Props) {
           {chat.lastMessageAt && (
             <span
               className={clsx(
-                "col-span-2 justify-self-end text-xs opacity-70",
+                "col-span-2 justify-self-end text-[.6rem] opacity-70",
                 isSelected && "text-cyan-400",
               )}
             >
-              {format(new Date(chat.lastMessageAt), "p")}
+              {format(chat.lastMessageAt, "p")}
             </span>
           )}
         </div>

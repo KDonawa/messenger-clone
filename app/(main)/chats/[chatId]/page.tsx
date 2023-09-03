@@ -7,6 +7,7 @@ type Props = {
     chatId: string;
   };
 };
+
 export default async function Page({ params: { chatId } }: Props) {
   const chat = await getChatById(chatId);
 

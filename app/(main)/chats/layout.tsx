@@ -4,7 +4,9 @@ import ListSkeleton from "@/app/components/ListSkeleton";
 import { getChats } from "@/app/actions/getChats";
 import { Suspense } from "react";
 
-export default async function ChatsLayout({
+export const dynamic = "force-dynamic";
+
+export default function ChatsLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -1,19 +1,26 @@
 import clsx from "clsx";
 import Avatar from "../Avatar";
+import { BaseUser } from "@/app/actions/getCurrentUser";
+import { format } from "date-fns";
 
 type Props = {
   isCurrentUser?: boolean;
-  owner?: string;
-  time?: string;
-  content?: string;
+  content?: string | null;
+  owner?: BaseUser;
+  time?: Date;
 };
 
-export default function ChatBubble({ isCurrentUser = true }: Props) {
+export default function ChatBubble({
+  isCurrentUser = true,
+  content,
+  owner,
+  time,
+}: Props) {
   return (
     <div className={clsx("flex gap-2", isCurrentUser && "flex-row-reverse")}>
-      <Avatar width={28} height={28} />
+      <Avatar width={28} height={28} user={owner} />
 
-      <div className="flex flex-col gap-1">
+      <div className="flex w-9/12 flex-col gap-1 lg:w-7/12">
         {/* Info */}
         <div
           className={clsx(
@@ -21,24 +28,32 @@ export default function ChatBubble({ isCurrentUser = true }: Props) {
             isCurrentUser && "flex-row-reverse",
           )}
         >
-          <div>User</div>
-          <div className="text-[.6rem] opacity-50">9:17 AM</div>
+          <div>{owner?.name}</div>
+          {time && (
+            <div className="text-[.6rem] opacity-50">{format(time, "p")}</div>
+          )}
         </div>
 
         {/* Text */}
-        <div
+        <p
           className={clsx(
-            "w-7/12 px-3 py-2 text-xs sm:py-3",
+            " px-3 py-2 text-sm sm:py-3",
             isCurrentUser
               ? "self-end rounded-s-xl rounded-br-xl bg-blue-600 text-gray-50"
-              : "rounded-e-xl rounded-bl-xl bg-gray-200",
+              : "self-start rounded-e-xl rounded-bl-xl bg-gray-200",
           )}
         >
-          <p className="">
-            Hi. How have you been? I need this text to be longer so I can test
-            wrapping
-          </p>
-        </div>
+          {content ? (
+            <span className="whitespace-pre">{content}</span>
+          ) : (
+            <span>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
+              perferendis neque, deserunt possimus eaque maxime laborum ipsam
+              reprehenderit, delectus magnam, sunt illo veritatis? Neque facilis
+              autem, dolore a iste officiis.
+            </span>
+          )}
+        </p>
       </div>
     </div>
   );

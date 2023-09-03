@@ -27,12 +27,13 @@ export type LoginFormInput = z.infer<typeof loginSchema>;
 export const postChatSchema = z.object({
   userId: z.string().nonempty(),
 });
+export type PostChatSchema = z.infer<typeof postChatSchema>;
 
 // MESSAGES
 export const messageFormSchema = z.object({
   text: z.string().optional(),
   image: z.string().optional(),
   chatId: z.string().nonempty(),
-  senderId: z.string().nonempty(),
+  // senderId: z.string().nonempty(),
 });
 export type MessageFormSchema = z.infer<typeof messageFormSchema>;
