@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/prisma";
-import { getSessionUser } from "../utils/getSessionUser";
+import { getSessionUser } from "@/app/utils/getSessionUser";
 import { Prisma } from ".prisma/client";
 
 export const userSelect = Prisma.validator<Prisma.UserSelect>()({

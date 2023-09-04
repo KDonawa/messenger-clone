@@ -30,7 +30,9 @@ export default function ChatBubble({
         >
           <div>{owner?.name}</div>
           {time && (
-            <div className="text-[.6rem] opacity-50">{format(time, "p")}</div>
+            <div className="text-[.6rem] opacity-50">
+              {format(new Date(time), "p")}
+            </div>
           )}
         </div>
 

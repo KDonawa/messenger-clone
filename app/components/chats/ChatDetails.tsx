@@ -1,29 +1,50 @@
 "use client";
 
-import { useOtherUserInChat } from "../../hooks/useOtherUserInChat";
-import { ChatWithMessages } from "../../actions/getChatById";
+import { useOtherUserInChat } from "@/app/hooks/useOtherUserInChat";
+import { ChatPayload, MessagePayload } from "@/app/actions/getChatById";
 import Avatar from "../Avatar";
 import { BsThreeDots } from "react-icons/bs";
 import { HiChevronLeft } from "react-icons/hi";
 import MainPanel from "../MainPanel";
 import Link from "next/link";
 import ChatBubble from "./ChatBubble";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageForm from "./MessageForm";
 import { useSessionUser } from "@/app/hooks/useSessionUser";
+import { pusherClient } from "@/app/lib/pusher";
 
 type Props = {
-  chat: ChatWithMessages;
+  chat: ChatPayload;
 };
 
 export default function ChatDetails({ chat }: Props) {
   const sessionUser = useSessionUser();
   const otherUser = useOtherUserInChat(chat.users);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState(chat.messages);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
-  }, []);
+  }, [messages]);
+
+  useEffect(() => {
+    const messageHandler = (newMessage: MessagePayload) => {
+      setMessages((current) => {
+        const messageExists = Boolean(
+          messages.find((message) => message.id === newMessage.id),
+        );
+        return messageExists ? current : [...current, newMessage];
+      });
+    };
+
+    pusherClient.subscribe(chat.id);
+    pusherClient.bind("messages:new", messageHandler);
+
+    return () => {
+      pusherClient.unsubscribe(chat.id);
+      pusherClient.unbind("messages:new", messageHandler);
+    };
+  }, [messages, chat.id]);
 
   return (
     <MainPanel>
@@ -45,7 +66,7 @@ export default function ChatDetails({ chat }: Props) {
 
         {/* MESSAGES DISPLAY */}
         <div className="flex flex-1 flex-col gap-5 overflow-y-auto border-b-2 p-2 sm:p-4">
-          {chat.messages.map((message) => {
+          {messages.map((message) => {
             return (
               <ChatBubble
                 key={message.id}
@@ -56,18 +77,6 @@ export default function ChatDetails({ chat }: Props) {
               />
             );
           })}
-          {/* <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
-          <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
-          <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
-          <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
-          <ChatBubble />
-          <ChatBubble isCurrentUser={false} />
-          <ChatBubble />
-          <ChatBubble isCurrentUser={false} /> */}
           <div ref={bottomRef} />
         </div>
 
