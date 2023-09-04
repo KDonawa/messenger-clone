@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { IconType } from "react-icons";
 import { BsFillChatFill, BsPeopleFill } from "react-icons/bs";
+import { CiLogout } from "react-icons/ci";
+import { signOut } from "next-auth/react";
 
 type Props = {
   className?: string;
@@ -18,6 +20,13 @@ export default function MobileNavbar({ className }: Props) {
         <NavLink name="Chats" path="/chats" icon={BsFillChatFill} />
 
         <NavLink name="People" path="/users" icon={BsPeopleFill} />
+
+        <button
+          onClick={() => signOut()}
+          className="flex flex-1 items-center justify-center"
+        >
+          <CiLogout className="h-6 w-6" />
+        </button>
       </ul>
     </nav>
   );
